@@ -450,14 +450,30 @@ public class KNN {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Double[] query = {63.529,63.529,56.040,63.529};
-		//System.out.println(learning_set.length);
-		//System.out.println(classes[0][0]);
+		/**
+		 * w tej tablicy umieszczamy poszczególne wyniki badań da analizy
+		 */
+		Double[] query = {63.529,64.528,64.528,64.528,64.528,64.528,64.528,64.528,64.528,64.528,64.528,61.443,61.443,61.443};
+		/**
+		 * w tej tablicy obiektów znajdują się poszczególne dystanse do kolejnych danych ze zbioru uczącego
+		 */
 		ClosestObject[][] znalezione_obiekty = Find_closest_distance(query, learning_set, classes);
+		/**
+		 * w zmiennej k następuje określenie w jakiej ilości najbliższych somsiadów będzie przeprowadzone wyszukiwanie
+		 */
 		Integer k=new Integer(10);
+		/**
+		 * W tej HashMapie następuje określenie ilości znalezionych najbliższych somsiadów należących do poszczególnych klas
+		 */
 		HashMap<String, Integer> counting = k_neighbours_selection(query,znalezione_obiekty,k);
+		/**
+		 * w tym stringu znajduje się ostateczna odpowiedź, która została wybrana na postawie większości wystąpień danej klasy w wyszukiwaniu
+		 */
 		String final_decision=obtain_final_decision(counting);
-		System.out.println(counting);
+		/**
+		 * Wypisanie wyników na konsolę
+		 */
+		System.out.println("Ilość powtórzeń w poszczególnych klasach: " + counting);
 		System.out.println("Nowo wprowadzona wartość przynależy do klasy: \"" + final_decision + "\"");
 	}
 
