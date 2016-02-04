@@ -2,6 +2,8 @@ import java.lang.reflect.Array;
 import java.security.GuardedObject;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class KNN {
 	static Double[][] learning_set={{63.529},
@@ -38,6 +40,60 @@ public class KNN {
 		//System.out.println(learning_set.length);
 		//System.out.println(classes[0][0]);
 		ClosestObject[][] znalezione_obiekty = Find_closest_distance(query, learning_set, classes);
+		Integer k=new Integer(2);
+		HashMap<String, Integer> counting = k_neighbours_selection(query,znalezione_obiekty,k);
+		String final_decision=obtain_final_decision(counting);
+//		System.out.println(counting);
+		System.out.println("Nowo wprowadzona wartość przynależy do klasy: \"" + final_decision + "\"");
+	}
+
+	private static String obtain_final_decision(HashMap<String, Integer> counting) {
+		String temp_final_decision=new String();
+		Integer temp_max_value=0;
+		for(Map.Entry<String, Integer> entry : counting.entrySet())
+		{
+			String temp_s=entry.getKey();
+			Integer temp_v=entry.getValue();
+//			System.out.println(temp_s);
+//			System.out.println(temp_v);
+			if(temp_max_value<temp_v)
+			{
+				temp_max_value=temp_v;
+				temp_final_decision=temp_s;
+			}
+		}
+		if(temp_max_value==0)
+		{
+			return "Nic nie znaleziono";
+		}
+		else
+		{
+			return temp_final_decision;
+		}
+		
+	}
+
+	private static HashMap<String, Integer> k_neighbours_selection(Double[] query, ClosestObject[][] znalezione_obiekty, Integer k) {
+		//dla każdego wiersza wybierz po k kolum i sprawdź czy większość należy do jednej klasy jeżeli nie to wybierz losowo
+		HashMap<String, Integer> mapa= new HashMap<String, Integer>();
+		//mapa.put(znalezione_obiekty[0][0].classes,0);
+		for (int i=0;i<query.length;i++)
+		{
+			for(int j=0;j<k;j++)
+			{
+				
+				if(!mapa.containsKey(znalezione_obiekty[i][j].classes))
+				{
+					mapa.put(znalezione_obiekty[i][j].classes, 1);
+				}
+				else
+				{
+					mapa.put(znalezione_obiekty[i][j].classes, mapa.get(znalezione_obiekty[i][j].classes)+1);
+				}
+				
+			}
+		}
+		return mapa;
 	}
 
 	private static ClosestObject[][] Find_closest_distance(Double[] query,Double[][] learning_set,String[][] classes)
@@ -79,7 +135,7 @@ public class KNN {
 			System.out.println("\n\n\n");
 		}
 		
-		return null;
+		return closestobj;
 		
 	}
 }
