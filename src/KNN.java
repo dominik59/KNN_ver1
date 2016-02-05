@@ -453,7 +453,7 @@ public class KNN {
 		/**
 		 * w tej tablicy umieszczamy poszczególne wyniki badań da analizy
 		 */
-		Double[] query = {63.529,64.528,64.528,64.528,64.528,64.528,64.528,64.528,64.528,64.528,64.528,61.443,61.443,61.443};
+		Double[] query = {63.529,63.529,64.528,64.528,64.528,64.528,64.526,64.526,64.528,64.528};
 		/**
 		 * w tej tablicy obiektów znajdują się poszczególne dystanse do kolejnych danych ze zbioru uczącego
 		 */
@@ -461,7 +461,7 @@ public class KNN {
 		/**
 		 * w zmiennej k następuje określenie w jakiej ilości najbliższych somsiadów będzie przeprowadzone wyszukiwanie
 		 */
-		Integer k=new Integer(10);
+		Integer k=new Integer(1);
 		/**
 		 * W tej HashMapie następuje określenie ilości znalezionych najbliższych somsiadów należących do poszczególnych klas
 		 */
@@ -528,8 +528,8 @@ public class KNN {
 
 	private static ClosestObject[][] Find_closest_distance(Double[] query,Double[][] learning_set,String[][] classes)
 	{		
-		System.out.println(query.length);
-		System.out.println(learning_set.length);
+		System.out.println("Ilość danych w zbiorze testowym: " + query.length);
+		System.out.println("Ilość danych w zbiorze uczącym: " + learning_set.length);
 		ClosestObject[][] closestobj=new ClosestObject[query.length][learning_set.length];
 		
 		for(int i=0; i<query.length;i++)
@@ -556,14 +556,18 @@ public class KNN {
 			});
 		}
 		
-		for(int i=0;i<closestobj.length;i++)
-		{
-			for(int j=0;j<closestobj[i].length;j++)
-			{
-				System.out.println(closestobj[i][j].distance + " " + closestobj[i][j].classes);
-			}
-			System.out.println("\n\n\n");
-		}
+		/**
+		 * fragment kodu pozwalający na wyświetlanie poszczególnych odległości
+		 */
+		
+//		for(int i=0;i<closestobj.length;i++)
+//		{
+//			for(int j=0;j<closestobj[i].length;j++)
+//			{
+//				System.out.println(closestobj[i][j].distance + " " + closestobj[i][j].classes);
+//			}
+//			System.out.println("\n\n\n");
+//		}
 		
 		return closestobj;
 		
