@@ -59,7 +59,7 @@ public class KNN {
 			List<String[]> myEntries = reader.readAll();
 			learning_set=new Double[(myEntries.size()-1)*myEntries.get(0).length][1];
 			classes=new String[(myEntries.size()-1)*myEntries.get(0).length][1];
-			System.out.println(myEntries.get(0).length);
+			//System.out.println(myEntries.get(0).length);
 			for (int j = 0; j < myEntries.get(0).length; j++) {
 				for (int i = 0; i < myEntries.size()-1; i++) {
 					learning_set[i+j*28][0] = Double.parseDouble(myEntries.get(i+1)[j]);
