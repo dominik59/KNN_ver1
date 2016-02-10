@@ -1,456 +1,28 @@
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.security.GuardedObject;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
-public class KNN {
-	static Double[][] learning_set={{63.529},
-									{63.529},
-									{64.528},
-									{64.528},
-									{64.528},
-									{64.528},
-									{64.526},
-									{64.526},
-									{64.528},
-									{64.528},
-									
-									{61.445},
-									{61.434},
-									{60.423},
-									{61.434},
-									{60.412},
-									{61.421},
-									{60.435},
-									{61.434},
-									{60.447},
-									{60.449},
-									
-									{56.040},
-									{56.040},
-									{56.040},
-									{57.040},
-									{57.040},
-									{56.040},
-									{56.040},
-									{56.040},
-									{55.040},
-									{57.042},
-									
-									{73.094},
-									{72.090},
-									{72.087},
-									{73.086},
-									{72.083},
-									{72.083},
-									{72.079},
-									{72.079},
-									{72.079},
-									{72.076},
-									
-									{68.230},
-									{68.230},
-									{68.230},
-									{68.231},
-									{68.223},
-									{67.224},
-									{68.231},
-									{68.231},
-									{68.230},
-									{68.231},
-									
-									{71.046},
-									{71.046},
-									{71.046},
-									{70.048},
-									{70.048},
-									{70.048},
-									{70.049},
-									{70.049},
-									{70.049},
-									{70.048},
-									
-									{71.046},
-									{70.046},
-									{70.046},
-									{70.046},
-									{70.046},
-									{70.048},
-									{70.049},
-									{70.049},
-									{70.049},
-									{70.046},
-									
-									{68.132},
-									{68.132},
-									{68.132},
-									{69.131},
-									{69.131},
-									{68.127},
-									{68.127},
-									{68.127},
-									{68.132},
-									{68.132},
-									
-									{72.542},
-									{72.542},
-									{72.541},
-									{72.541},
-									{71.501},
-									{71.501},
-									{71.514},
-									{71.514},
-									{71.514},
-									{71.514},
-									
-									{72.586},
-									{72.586},
-									{72.586},
-									{72.586},
-									{72.557},
-									{72.557},
-									{71.543},
-									{72.557},
-									{72.557},
-									{72.557},
-									
-									{62.999},
-									{62.999},
-									{62.999},
-									{62.999},
-									{62.999},
-									{62.999},
-									{62.999},
-									{62.999},
-									{62.999},
-									{62.999},
-									
-									{46.015},
-									{46.015},
-									{48.016},
-									{48.016},
-									{48.016},
-									{46.015},
-									{46.015},
-									{46.015},
-									{48.016},
-									{48.016},
-									
-									{82.372},
-									{82.361},
-									{82.351},
-									{82.351},
-									{82.351},
-									{82.331},
-									{82.351},
-									{82.361},
-									{82.372},
-									{82.372},
-									
-									{78.999},
-									{78.999},
-									{78.999},
-									{78.999},
-									{78.999},
-									{79.999},
-									{79.999},
-									{79.999},
-									{79.999},
-									{79.999},
-									
-									{85.056},
-									{85.056},
-									{85.054},
-									{85.054},
-									{85.054},
-									{85.054},
-									{85.056},
-									{85.056},
-									{85.056},
-									{85.056},
-									
-									{71.999},
-									{71.999},
-									{71.999},
-									{72.999},
-									{72.999},
-									{72.999},
-									{72.999},
-									{71.999},
-									{71.999},
-									{71.999},
-									
-									{66.680},
-									{66.680},
-									{66.680},
-									{66.663},
-									{67.678},
-									{67.643},
-									{66.626},
-									{67.624},
-									{67.622},
-									{67.622},
-									
-									{61.053},
-									{61.053},
-									{61.056},
-									{62.059},
-									{61.056},
-									{63.052},
-									{61.056},
-									{62.059},
-									{62.050},
-									{63.052},
-									
-									{66.218},
-									{66.220},
-									{66.220},
-									{66.226},
-									{66.219},
-									{66.220},
-									{66.220},
-									{66.219},
-									{66.220},
-									{66.226},
-									
-									{67.149},
-									{66.144},
-									{66.145},
-									{67.149},
-									{66.144},
-									{66.145},
-									{67.149},
-									{66.144},
-									{66.145},
-									{67.149},};
-	
-	static String[][] classes={	{"ajayeb"},
-								{"ajayeb"},
-								{"ajayeb"},
-								{"ajayeb"},
-								{"ajayeb"},
-								{"ajayeb"},
-								{"ajayeb"},
-								{"ajayeb"},
-								{"ajayeb"},
-								{"ajayeb"},
-								
-								{"aday jmal"},
-								{"aday jmal"},
-								{"aday jmal"},
-								{"aday jmal"},
-								{"aday jmal"},
-								{"aday jmal"},
-								{"aday jmal"},
-								{"aday jmal"},
-								{"aday jmal"},
-								{"aday jmal"},
-								
-								{"amreaj"},
-								{"amreaj"},
-								{"amreaj"},
-								{"amreaj"},
-								{"amreaj"},
-								{"amreaj"},
-								{"amreaj"},
-								{"amreaj"},
-								{"amreaj"},
-								{"amreaj"},
-								
-								{"aood"},
-								{"aood"},
-								{"aood"},
-								{"aood"},
-								{"aood"},
-								{"aood"},
-								{"aood"},
-								{"aood"},
-								{"aood"},
-								{"aood"},
-								
-								{"asgar_ali"},
-								{"asgar_ali"},
-								{"asgar_ali"},
-								{"asgar_ali"},
-								{"asgar_ali"},
-								{"asgar_ali"},
-								{"asgar_ali"},
-								{"asgar_ali"},
-								{"asgar_ali"},
-								{"asgar_ali"},
-								
-								{"bukhoor"},
-								{"bukhoor"},
-								{"bukhoor"},
-								{"bukhoor"},
-								{"bukhoor"},
-								{"bukhoor"},
-								{"bukhoor"},
-								{"bukhoor"},
-								{"bukhoor"},
-								{"bukhoor"},
-								
-								{"bukhoor"},
-								{"bukhoor"},
-								{"bukhoor"},
-								{"bukhoor"},
-								{"bukhoor"},
-								{"bukhoor"},
-								{"bukhoor"},
-								{"bukhoor"},
-								{"bukhoor"},
-								{"bukhoor"},
-								
-								{"dehenalaod"},
-								{"dehenalaod"},
-								{"dehenalaod"},
-								{"dehenalaod"},
-								{"dehenalaod"},
-								{"dehenalaod"},
-								{"dehenalaod"},
-								{"dehenalaod"},
-								{"dehenalaod"},
-								{"dehenalaod"},
-								
-								{"junaid"},
-								{"junaid"},
-								{"junaid"},
-								{"junaid"},
-								{"junaid"},
-								{"junaid"},
-								{"junaid"},
-								{"junaid"},
-								{"junaid"},
-								{"junaid"},
-								
-								{"kausar"},
-								{"kausar"},
-								{"kausar"},
-								{"kausar"},
-								{"kausar"},
-								{"kausar"},
-								{"kausar"},
-								{"kausar"},
-								{"kausar"},
-								{"kausar"},
-								
-								{"rose"},
-								{"rose"},
-								{"rose"},
-								{"rose"},
-								{"rose"},
-								{"rose"},
-								{"rose"},
-								{"rose"},
-								{"rose"},
-								{"rose"},
-								
-								{"solidmusk"},
-								{"solidmusk"},
-								{"solidmusk"},
-								{"solidmusk"},
-								{"solidmusk"},
-								{"solidmusk"},
-								{"solidmusk"},
-								{"solidmusk"},
-								{"solidmusk"},
-								{"solidmusk"},
-								
-								{"TeaTreeOil"},
-								{"TeaTreeOil"},
-								{"TeaTreeOil"},
-								{"TeaTreeOil"},
-								{"TeaTreeOil"},
-								{"TeaTreeOil"},
-								{"TeaTreeOil"},
-								{"TeaTreeOil"},
-								{"TeaTreeOil"},
-								{"TeaTreeOil"},
-								
-								{"raspberry"},
-								{"raspberry"},
-								{"raspberry"},
-								{"raspberry"},
-								{"raspberry"},
-								{"raspberry"},
-								{"raspberry"},
-								{"raspberry"},
-								{"raspberry"},
-								{"raspberry"},
-								
-								{"RoseMusk"},
-								{"RoseMusk"},
-								{"RoseMusk"},
-								{"RoseMusk"},
-								{"RoseMusk"},
-								{"RoseMusk"},
-								{"RoseMusk"},
-								{"RoseMusk"},
-								{"RoseMusk"},
-								{"RoseMusk"},
+import com.opencsv.CSVReader;
 
-								{"strawberry"},
-								{"strawberry"},
-								{"strawberry"},
-								{"strawberry"},
-								{"strawberry"},
-								{"strawberry"},
-								{"strawberry"},
-								{"strawberry"},
-								{"strawberry"},
-								{"strawberry"},
-								
-								{"constrected2"},
-								{"constrected2"},
-								{"constrected2"},
-								{"constrected2"},
-								{"constrected2"},
-								{"constrected2"},
-								{"constrected2"},
-								{"constrected2"},
-								{"constrected2"},
-								{"constrected2"},
-								
-								{"carolina_herrera"},
-								{"carolina_herrera"},
-								{"carolina_herrera"},
-								{"carolina_herrera"},
-								{"carolina_herrera"},
-								{"carolina_herrera"},
-								{"carolina_herrera"},
-								{"carolina_herrera"},
-								{"carolina_herrera"},
-								{"carolina_herrera"},
-								
-								{"oudh_ma'alattar"},
-								{"oudh_ma'alattar"},
-								{"oudh_ma'alattar"},
-								{"oudh_ma'alattar"},
-								{"oudh_ma'alattar"},
-								{"oudh_ma'alattar"},
-								{"oudh_ma'alattar"},
-								{"oudh_ma'alattar"},
-								{"oudh_ma'alattar"},
-								{"oudh_ma'alattar"},
-								
-								{"constrected"},
-								{"constrected"},
-								{"constrected"},
-								{"constrected"},
-								{"constrected"},
-								{"constrected"},
-								{"constrected"},
-								{"constrected"},
-								{"constrected"},
-								{"constrected"},};
-	
-	
+
+
+public class KNN {
+
+	static Double[][] learning_set;
+	static String[][] classes;
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		/**
+		readcsv();
+	   	/**
 		 * w tej tablicy umieszczamy poszczególne wyniki badań da analizy
 		 */
 		Double[] query = {63.529,63.529,64.528,64.528,64.528,64.528,64.526,64.526,64.528,64.528};
@@ -461,7 +33,8 @@ public class KNN {
 		/**
 		 * w zmiennej k następuje określenie w jakiej ilości najbliższych somsiadów będzie przeprowadzone wyszukiwanie
 		 */
-		Integer k=new Integer(1);
+		Integer k=new Integer(3);
+		System.out.println("Wybrane K to: " + k);
 		/**
 		 * W tej HashMapie następuje określenie ilości znalezionych najbliższych somsiadów należących do poszczególnych klas
 		 */
@@ -476,6 +49,43 @@ public class KNN {
 		System.out.println("Ilość powtórzeń w poszczególnych klasach: " + counting);
 		System.out.println("Nowo wprowadzona wartość przynależy do klasy: \"" + final_decision + "\"");
 	}
+	
+	
+	private static void readcsv() {
+		// TODO Auto-generated method stub
+		CSVReader reader;
+		try {
+			reader = new CSVReader(new FileReader("perfume_data.csv"));
+			List<String[]> myEntries = reader.readAll();
+			learning_set=new Double[(myEntries.size()-1)*myEntries.get(0).length][1];
+			classes=new String[(myEntries.size()-1)*myEntries.get(0).length][1];
+			System.out.println(myEntries.get(0).length);
+			for (int j = 0; j < myEntries.get(0).length; j++) {
+				for (int i = 0; i < myEntries.size()-1; i++) {
+					learning_set[i+j*28][0] = Double.parseDouble(myEntries.get(i+1)[j]);
+				}
+			}
+			for(int j =0;j<myEntries.get(0).length;j++)
+			{
+				for(int i=0;i<myEntries.size()-1;i++)
+				{
+					classes[i+j*28][0]=myEntries.get(0)[j];
+				}
+			}
+//			for(int i=0;i<myEntries.size();i++)
+//			{
+//				String[] str=myEntries.get(i);
+//				System.out.println(str[1]);
+//			}
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 
 	private static String obtain_final_decision(HashMap<String, Integer> counting) {
 		String temp_final_decision=new String();
